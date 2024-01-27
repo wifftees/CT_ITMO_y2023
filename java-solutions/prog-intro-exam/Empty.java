@@ -1,0 +1,4 @@
+// Empty stub
+
+class Empty {
+}
