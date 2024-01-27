@@ -1,0 +1,2 @@
+unzip -p ./grep-logs.zip | zcat | grep -P "1.1 5\d\d" | grep -wPo "\s[A-Z]*" | grep -o "[A-Z]*" | sort | uniq -d > logs
+tr '\n' ' ' < logs

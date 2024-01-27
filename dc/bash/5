@@ -1,0 +1,2 @@
+grep -woP "\+?[1-9]\d{1,14}" ./phone-numbers > good
+wc -l good | cut -d " " -f1

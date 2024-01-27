@@ -1,0 +1,5 @@
+touch sum.txt
+mrdir mod
+unzip ./mod-sort.zip -d ./mod
+for file in `ls -rt ./mod`; do cat ./mod/$file >> sum.txt; done
+sha256sum < sum.txt | cut -d " " -f1

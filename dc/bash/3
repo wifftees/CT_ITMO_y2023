@@ -1,0 +1,7 @@
+declare -i cnt=0
+target=`unzip -p word-count.zip target.word | grep "."`
+for file in `unzip -l ./word-count.zip | grep $target | grep  -o "_.*"`; 
+do 
+  cnt+=`unzip -p word-count.zip $file | wc -w`
+done
+echo $cnt

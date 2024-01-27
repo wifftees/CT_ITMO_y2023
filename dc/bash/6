@@ -1,0 +1,12 @@
+mkdir files
+cat ./wget-pdfs | while read line; do wget --directory-prefix=./files/ $line; done
+declare -i cnt=0
+
+for file in `ls files`; 
+do 
+  typeOfFile=`file ./files/$file | grep -o "PDF"`
+  if [[ "$typeOfFile" == "PDF" ]]; then
+    cnt+=`stat --printf="%s" ./files/$file`
+  fi;
+done
+echo $cnt
