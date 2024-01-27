@@ -4,10 +4,10 @@
 Не списывайте, глупцы...
 
 # [Введение в программирование (JAVA)](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions) 
-# Архитектура ЭВМ
+# [Архитектура ЭВМ](https://github.com/wifftees/CT_ITMO_y2023/tree/main/arch)
   - [Тернарная логика](https://github.com/wifftees/CT_ITMO_y2023/tree/main/arch/hw1)
   - [АЛУ](https://github.com/wifftees/CT_ITMO_y2023/tree/main/arch/hw2)
   - [Процессор MIPS](https://github.com/wifftees/CT_ITMO_y2023/tree/main/arch/hw3)
-# Цифровая культура
+# [Цифровая культура](https://github.com/wifftees/CT_ITMO_y2023/tree/main/dc)
   - [Bash](https://github.com/wifftees/CT_ITMO_y2023/tree/main/dc/bash)
   - [Docker](https://github.com/wifftees/CT_ITMO_y2023/tree/main/dc/docker)
