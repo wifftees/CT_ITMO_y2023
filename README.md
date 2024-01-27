@@ -4,6 +4,8 @@
 Не списывайте, глупцы...
 
 # [Введение в программирование (JAVA)](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions) 
+  - [Контест](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions/qf-solutions)
+  - [Шашки (билет на экзамене)](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions/prog-intro-exam)
 # [Архитектура ЭВМ](https://github.com/wifftees/CT_ITMO_y2023/tree/main/arch)
   - [Тернарная логика](https://github.com/wifftees/CT_ITMO_y2023/tree/main/arch/hw1)
   - [АЛУ](https://github.com/wifftees/CT_ITMO_y2023/tree/main/arch/hw2)
