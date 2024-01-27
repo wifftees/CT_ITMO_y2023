@@ -1,0 +1,1 @@
+docker run -p 30352:8000 virt
