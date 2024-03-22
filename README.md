@@ -6,7 +6,7 @@
 # [Введение в программирование (JAVA)](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions) 
   - [Шашки (билет на экзамене)](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions/prog-intro-exam)
   - [Generic Parser](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions/expression/generic)
-  - [Queue] (https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions/queue)
+  - [Queue](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions/queue)
   - [Markup Converter](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions/markup)
   - [MarkdownToHtml Converter](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions/md2html)
   - [Контест](https://github.com/wifftees/CT_ITMO_y2023/tree/main/java-solutions/qf-solutions)
