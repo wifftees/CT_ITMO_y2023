@@ -1,13 +1,10 @@
-package expression.exceptions;
+package expression.generic.implementation;
 
-import expression.Element;
-import expression.Multiply;
+import expression.exceptions.OverflowException;
 
-public class CheckedMultiply extends Multiply {
-    public CheckedMultiply(Element a, Element b) {
-        super(a, b);
-    }
+import java.util.function.BiFunction;
 
+public class CheckedIntegerMultiply implements BiFunction<Integer, Integer, Integer> {
     private boolean detectOverflow(int a, int b) {
         if (a == 0 || b == 0) {
             return false;
@@ -29,7 +26,7 @@ public class CheckedMultiply extends Multiply {
     }
 
     @Override
-    public int calc(int a, int b) {
+    public Integer apply(Integer a, Integer b) {
         if (detectOverflow(a, b))  {
             throw new OverflowException("Multiplication result exceeds integer boundaries");
         }

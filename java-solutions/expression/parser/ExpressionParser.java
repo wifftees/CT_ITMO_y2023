@@ -1,12 +1,28 @@
 package expression.parser;
-import expression.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import expression.Add;
+import expression.BitwiseAnd;
+import expression.BitwiseNot;
+import expression.BitwiseOr;
+import expression.BitwiseXOR;
+import expression.Const;
+import expression.Divide;
+import expression.Element;
+import expression.Multiply;
+import expression.Sign;
+import expression.Subtract;
+import expression.TripleExpression;
+import expression.Variable;
+import expression.exceptions.ExpectationMismatch;
+import expression.exceptions.TripleParser;
 
 public class ExpressionParser extends BaseParser implements TripleParser {
+    private enum OperatorType {
+        OR, XOR, AND, ADD, PRODUCT
+    }
+
     @Override
-    public TripleExpression parse(String expression) {
+    public TripleExpression parse(String expression) throws ExpectationMismatch {
         source = new StringSource(expression);
 
         take();
@@ -14,87 +30,67 @@ public class ExpressionParser extends BaseParser implements TripleParser {
         return parseExpression(true);
     }
 
-    private enum BitwiseOperatorType {
-        OR, XOR, AND
-    }
-
-    private enum BinaryOperatorType {
-        ADD, PRODUCT;
-    }
-
-
-    private Element parseBitwiseOperator(boolean wholeExp, BitwiseOperatorType operator) {
-        Element leftPart = switch (operator) {
-            case OR -> parseBitwiseOperator(wholeExp, BitwiseOperatorType.XOR);
-            case XOR -> parseBitwiseOperator(wholeExp, BitwiseOperatorType.AND);
-            case AND -> parseBinaryOperator(wholeExp, BinaryOperatorType.ADD);
-        };
-
-        if (!wholeExp) {
-            return leftPart;
-        }
-
-        char takeValue = switch (operator) {
-            case OR -> '|';
-            case XOR -> '^';
-            case AND -> '&';
-        };
-
+    private Element parseExpression(boolean wholeExp) throws ExpectationMismatch {
         skipWhitespace();
-        while (take(takeValue)) {
-            skipWhitespace();
-            leftPart = switch (operator) {
-                case OR -> new BitwiseOr(leftPart, parseBitwiseOperator(true, BitwiseOperatorType.XOR));
-                case XOR -> new BitwiseXOR(leftPart, parseBitwiseOperator(true, BitwiseOperatorType.AND));
-                case AND -> new BitwiseAnd(leftPart, parseBinaryOperator(true, BinaryOperatorType.ADD));
-            };
-            skipWhitespace();
-        }
-
-        return leftPart;
-
+        return parseOperator(wholeExp, OperatorType.OR);
     }
 
-    private Element parseExpression(boolean wholeExp) {
-        skipWhitespace();
-        return parseBitwiseOperator(wholeExp, BitwiseOperatorType.OR);
+    private char[] createArrayFromChars(char... chars) {
+        return chars;
+    }
+    private char[] getTakeValuesByOperationType(OperatorType operator) {
+        return switch (operator) {
+            case OR -> createArrayFromChars('|');
+            case XOR -> createArrayFromChars('^');
+            case AND -> createArrayFromChars('&');
+            case ADD -> createArrayFromChars('+', '-');
+            case PRODUCT -> createArrayFromChars('*', '/');
+        };
     }
 
-    private Element parseBinaryOperator(boolean wholeExp, BinaryOperatorType operator) {
+    private Element parseOperator(boolean wholeExp, OperatorType operator) throws ExpectationMismatch {
         Element leftPart = switch (operator) {
-            case ADD -> parseBinaryOperator(wholeExp, BinaryOperatorType.PRODUCT);
+            case OR -> parseOperator(wholeExp, OperatorType.XOR);
+            case XOR -> parseOperator(wholeExp, OperatorType.AND);
+            case AND -> parseOperator(wholeExp, OperatorType.ADD);
+            case ADD -> parseOperator(wholeExp, OperatorType.PRODUCT);
             case PRODUCT -> parseLowestLevel();
         };
 
         if (!wholeExp) {
             return leftPart;
         }
-
-        char[] takeValues = switch (operator) {
-            case ADD -> new char[]{'+', '-'};
-            case PRODUCT -> new char[]{'*', '/'};
-        };
+        char[] takeValues = getTakeValuesByOperationType(operator);
 
         skipWhitespace();
-        while (test(takeValues[0]) || test(takeValues[1])) {
-            if (take(takeValues[0])) {
-                leftPart = switch (operator) {
-                    case ADD -> new Add(leftPart, parseBinaryOperator(true, BinaryOperatorType.PRODUCT));
-                    case PRODUCT -> new Multiply(leftPart, parseLowestLevel());
-                };
-            } else if (take(takeValues[1])) {
-                leftPart = switch (operator) {
-                    case ADD -> new Subtract(leftPart, parseBinaryOperator(true, BinaryOperatorType.PRODUCT));
-                    case PRODUCT -> new Divide(leftPart, parseLowestLevel());
-                };
-            }
+        while (testAny(takeValues)) {
+            char currentSymbol = take();
+            leftPart = switch (operator) {
+                case OR -> new BitwiseOr(leftPart, parseOperator(true, OperatorType.XOR));
+                case XOR -> new BitwiseXOR(leftPart, parseOperator(true, OperatorType.AND));
+                case AND -> new BitwiseAnd(leftPart, parseOperator(true, OperatorType.ADD));
+                case ADD -> {
+                    if (currentSymbol == '+') {
+                        yield new Add(leftPart, parseOperator(true, OperatorType.PRODUCT));
+                    } else {
+                        yield new Subtract(leftPart, parseOperator(true, OperatorType.PRODUCT));
+                    }
+                }
+                case PRODUCT -> {
+                    if (currentSymbol == '*') {
+                        yield new Multiply(leftPart, parseLowestLevel());
+                    } else {
+                        yield new Divide(leftPart, parseLowestLevel());
+                    }
+                }
+            };
             skipWhitespace();
         }
 
         return leftPart;
     }
 
-    private Element parseLowestLevel() {
+    private Element parseLowestLevel() throws ExpectationMismatch {
         skipWhitespace();
         if (take('(')) {
             return parseBrackets();
@@ -125,7 +121,7 @@ public class ExpressionParser extends BaseParser implements TripleParser {
         return new Const(Integer.parseInt(number.toString()));
     }
 
-    private Element parseBrackets() {
+    private Element parseBrackets() throws ExpectationMismatch {
         Element expression = parseExpression(true);
         skipWhitespace();
         expect(')');
@@ -133,11 +129,11 @@ public class ExpressionParser extends BaseParser implements TripleParser {
     }
 
 
-    private Element parseBitwiseNot() {
+    private Element parseBitwiseNot() throws ExpectationMismatch {
         return new BitwiseNot(parseExpression(false));
     }
 
-    private Element parseSign() {
+    private Element parseSign() throws ExpectationMismatch {
         if (testNumber()) {
             return parseConst(-1);
         } else {

@@ -33,6 +33,11 @@ public abstract class UnaryOperator implements Element {
     }
 
     @Override
+    public int evaluate(List<Integer> variables) {
+        return calc(child.evaluate(variables));
+    }
+
+    @Override
     public String toString() {
         return String.format(
                 "%s(%s)",

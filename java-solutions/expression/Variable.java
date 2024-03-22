@@ -1,15 +1,31 @@
 package expression;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Variable implements Element {
-    private final String symbol;
+    private String symbol = "default";
+    private int index;
 
     public Variable(String s) {
         if (s == null) {
             throw new IllegalArgumentException("Null values not supported");
         }
         symbol = s;
+    }
+
+    public Variable(int i) {
+        index = i;
+    }
+
+    public Variable(int i, String s) {
+        this(i);
+        symbol = s;
+    }
+
+    @Override
+    public int evaluate(List<Integer> variables) {
+        return variables.get(index);
     }
 
 

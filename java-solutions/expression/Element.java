@@ -1,4 +1,4 @@
 package expression;
 
-public interface Element extends Expression, TripleExpression {
+public interface Element extends Expression, TripleExpression, ListExpression {
 }

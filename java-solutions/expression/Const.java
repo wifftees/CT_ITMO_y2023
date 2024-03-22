@@ -1,5 +1,6 @@
 package expression;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Const implements Element {
@@ -17,6 +18,11 @@ public class Const implements Element {
 
     @Override
     public int evaluate(int x) {
+        return value;
+    }
+
+    @Override
+    public int evaluate(List<Integer> variables) {
         return value;
     }
 

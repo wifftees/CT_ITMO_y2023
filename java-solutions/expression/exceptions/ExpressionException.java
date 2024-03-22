@@ -1,6 +1,6 @@
 package expression.exceptions;
 
-public abstract class ExpressionException extends RuntimeException {
+public abstract class ExpressionException extends Exception {
     protected ExpressionException(String message, Throwable cause) {
         super(message, cause);
     }

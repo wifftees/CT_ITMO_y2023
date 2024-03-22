@@ -3,6 +3,8 @@ package expression.exceptions;
 import expression.Element;
 import expression.Sign;
 
+import java.math.BigInteger;
+
 public class CheckedNegate extends Sign {
     public CheckedNegate(Element a) {
         super(a);

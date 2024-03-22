@@ -36,6 +36,11 @@ public abstract class BinaryOperator implements Element {
     }
 
     @Override
+    public int evaluate(List<Integer> variables) {
+        return calc(list.get(0).evaluate(variables), list.get(1).evaluate(variables));
+    }
+
+    @Override
     public String toString() {
         return String.format(
                 "(%s %s %s)",

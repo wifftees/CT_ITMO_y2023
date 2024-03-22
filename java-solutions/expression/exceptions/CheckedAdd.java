@@ -9,15 +9,13 @@ public class CheckedAdd extends Add {
     }
 
     @Override
-    public int calc(int a, int b) {
-        int result =  a + b;
-
+    public int calc(int a, int b) throws EvaluationException {
         if (
-                (b > 0 && Integer.MAX_VALUE - b < a) || (b <= 0 && Integer.MIN_VALUE - b > a)
+                (b > 0 && a > Integer.MAX_VALUE - b) || (b < 0 && a < Integer.MIN_VALUE - b)
         ) {
             throw new OverflowException("Addition result exceeds integer boundaries");
         }
 
-        return result;
+        return a + b;
     }
 }

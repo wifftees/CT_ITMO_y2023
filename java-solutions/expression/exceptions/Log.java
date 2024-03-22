@@ -3,7 +3,7 @@ package expression.exceptions;
 import expression.Element;
 import expression.UnaryOperator;
 
-public class Log extends UnaryOperator {
+public class Log extends UnaryOperator { // :NOTE: naming
     public Log(Element e) {
         super(e);
     }
